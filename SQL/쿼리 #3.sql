@@ -1,0 +1,25 @@
+SELECT * FROM users GROUP BY country;
+SELECT country, COUNT(DISTINCT id) AS 국가별사용자수 FROM users WHERE country IN ('Korea', 'Spain') GROUP BY country;
+SELECT COUNT(DISTINCT id) AS 한국동의자수 FROM users WHERE country = 'Korea' AND is_marketing_agree = 1;
+SELECT country, COUNT(DISTINCT id) AS 한국동의자수 FROM users WHERE country IN ('Korea', 'USA') AND is_marketing_agree = 1;
+SELECT country AS 국가, is_marketing_agree AS 마케팅수신동의, COUNT(DISTINCT id) AS 회원수 FROM users GROUP BY 국가, 마케팅수신동의 ORDER BY country, 회원수 DESC;
+SELECT country AS 국가, city AS 도시, COUNT(DISTINCT id) AS 회원수 FROM users GROUP BY country, city ORDER BY 국가, 회원수 DESC, city;
+SELECT SUBSTR(created_at,1,7) AS 월별, COUNT(DISTINCT id) AS 회원수 FROM users GROUP BY SUBSTR(created_at,1,7) ORDER BY 월별 DESC;
+SELECT order_id AS 주문자, SUM(quantity) AS 합계 FROM orderdetails GROUP BY 주문자 ORDER BY 합계 DESC;
+SELECT staff_id AS 직원, user_id AS 회원, COUNT(DISTINCT order_date) AS 주문건수 FROM orders GROUP BY staff_id, user_id ORDER BY staff_id, 주문건수 DESC;
+SELECT SUBSTR(order_date,1,7) AS 월별, COUNT(DISTINCT user_id) AS 회원수 FROM orders GROUP BY 월별 ORDER BY 월별 DESC;
+SELECT country, COUNT(DISTINCT id) AS 국가별회원수 FROM users WHERE country IN ('Korea', 'USA', 'France') GROUP BY country;
+SELECT country, COUNT(DISTINCT id) AS 국가별회원수 FROM users GROUP BY country HAVING COUNT(DISTINCT id) > 7 ORDER BY 국가별회원수 DESC;
+SELECT staff_id, COUNT(DISTINCT id) AS 회원수, COUNT(DISTINCT user_id) AS 주문수 FROM orders GROUP BY staff_id HAVING 회원수 >= 10 AND 주문수 <= 40 ORDER BY 회원수 DESC;
+SELECT user_id AS 회원수, COUNT(DISTINCT id) AS 주문건수 FROM orders GROUP BY 회원수 HAVING 주문건수 >= 7 ORDER BY 주문건수 DESC;
+SELECT country AS 국가, COUNT(DISTINCT city) AS 도시, COUNT(DISTINCT id) AS 회원수 FROM users GROUP BY 국가 HAVING 도시 >= 5 AND 회원수 >= 3 ORDER BY 도시 DESC, 회원수 DESC;
+SELECT country AS 국가, COUNT(DISTINCT id) AS 회원수 FROM users WHERE country IN ('Korea', 'USA', 'Brazil', 'Maxico', 'Argentina') GROUP BY 국가 HAVING 회원수 >= 5 ORDER BY 회원수 DESC;
+
+SELECT * FROM users u INNER JOIN orders o ON u.id = o.user_id;
+SELECT * FROM users u LEFT JOIN orders o ON u.id = o.user_id;
+SELECT * FROM users u INNER JOIN orders o ON u.id = o.user_id ORDER BY o.id;
+SELECT u.id AS 유저아이디, u.username, u.created_at, u.phone, u.is_marketing_agree, u.country, u.city, o.id AS 주문아이디, o.staff_id, o.order_dateFROM users u INNER JOIN orders o ON u.id = o.user_id;
+SELECT * FROM users u LEFT JOIN orders o ON u.id = o.user_id;
+SELECT * FROM users u LEFT JOIN orders o ON u.id = o.user_id WHERE o.id IS NULL;
+SELECT u.id AS 회원아이디, u.username AS 이메일, u.phone AS 연락처, o.id AS 주문아이디, od.product_id AS 제품아이디 FROM users u LEFT JOIN orders o ON u.id = o.user_id INNER JOIN orderdetails od ON o.id = od.order_id;
+SELECT * FROM users u right JOIN orders o ON u.id = o.user_id ORDER BY o.id;
